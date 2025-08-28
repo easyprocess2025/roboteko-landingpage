@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roboteko - Servicios de Tecnología Avanzada</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #00d4ff;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: #00d4ff;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #00d4ff;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .cta-btn {
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%2300d4ff" stop-opacity="0.1"/><stop offset="100%" stop-color="%2300d4ff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="300" r="100" fill="url(%23a)"/><circle cx="800" cy="200" r="150" fill="url(%23a)"/><circle cx="600" cy="700" r="120" fill="url(%23a)"/></svg>');
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero-text {
+            max-width: 600px;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: white;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            animation: slideInUp 1s ease-out;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+            animation: slideInUp 1s ease-out 0.2s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            animation: slideInUp 1s ease-out 0.4s both;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            padding: 1rem 2rem;
+            border: 2px solid #00d4ff;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #00d4ff;
+            transform: translateY(-3px);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Services Section */
+        .services {
+            padding: 5rem 0;
+            background: #f8fafc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            font-size: 1.1rem;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.4rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .service-card p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+        }
+
+        .features-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .features-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .features-text p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: #cbd5e1;
+        }
+
+        .features-list {
+            list-style: none;
+        }
+
+        .features-list li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #00d4ff;
+            font-weight: bold;
+        }
+
+        .features-visual {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 0;
+            background: #f8fafc;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #0f172a;
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #00d4ff;
+        }
+
+        .footer-section p,
+        .footer-section li {
+            color: #cbd5e1;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #00d4ff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #334155;
+            padding-top: 1rem;
+            text-align: center;
+            color: #64748b;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: rgba(15, 23, 42, 0.98);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 2rem 0;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .cta-btn {
+                display: none;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .features-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .hero-content,
+            .container {
+                padding: 0 1rem;
+            }
+
+            .service-card,
+            .contact-form {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="#" class="logo">Roboteko</a>
+            <ul class="nav-menu">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#nosotros">Nosotros</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>   
+            </div>
+            <a href="#contacto" class="cta-btn">Consulta Gratis</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Transformamos tu negocio con tecnología avanzada</h1>
+                <p>Soluciones integrales de TI que impulsan el crecimiento empresarial. Desde infraestructura hasta automatización, llevamos tu empresa al siguiente nivel tecnológico.</p>
+                <div class="hero-buttons">
+                    <a href="#servicios" class="btn-primary">Ver Servicios</a>
+                    <a href="#contacto" class="btn-secondary">Hablar con Experto</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="servicios" class="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nuestros Servicios</h2>
+                <p>Ofrecemos soluciones tecnológicas completas diseñadas para optimizar y modernizar tu infraestructura empresarial</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🏗️</div>
+                    <h3>Infraestructura IT</h3>
+                    <p>Diseño, implementación y mantenimiento de infraestructura tecnológica robusta. Servidores, redes, seguridad y backup para garantizar la continuidad de tu negocio.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">☁️</div>
+                    <h3>Software como Servicio</h3>
+                    <p>Soluciones SaaS personalizadas que se adaptan a tu negocio. Migración a la nube, aplicaciones web y sistemas escalables con soporte 24/7.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">⚡</div>
+                    <h3>Automatización</h3>
+                    <p>Automatiza procesos empresariales para aumentar la eficiencia. RPA, workflows inteligentes y integración de sistemas para reducir costos operativos.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📊</div>
+                    <h3>Software de Ofimática</h3>
+                    <p>Suite completa de herramientas de productividad. Microsoft 365, Google Workspace, gestión documental y colaboración en tiempo real.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="features-content">
+                <div class="features-text">
+                    <h2>¿Por qué elegirnos?</h2>
+                    <p>Con más de 10 años de experiencia, somos el socio tecnológico que tu empresa necesita para crecer en el mundo digital.</p>
+                    <ul class="features-list">
+                        <li>Soporte técnico 24/7 con tiempo de respuesta garantizado</li>
+                        <li>Equipo certificado en las principales tecnologías</li>
+                        <li>Soluciones escalables que crecen con tu negocio</li>
+                        <li>Implementación sin interrumpir tus operaciones</li>
+                        <li>Costos transparentes y ROI medible</li>
+                        <li>Cumplimiento de estándares de seguridad internacionales</li>
+                    </ul>
+                </div>
+                <div class="features-visual">
+                    <h3 style="text-align: center; margin-bottom: 2rem;">Estadísticas de Éxito</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; text-align: center;">
+                        <div>
+                            <div style="font-size: 2.5rem; font-weight: bold; color: #00d4ff;">500+</div>
+                            <p>Proyectos Exitosos</p>
+                        </div>
+                        <div>
+                            <div style="font-size: 2.5rem; font-weight: bold; color: #00d4ff;">99.9%</div>
+                            <p>Uptime Garantizado</p>
+                        </div>
+                        <div>
+                            <div style="font-size: 2.5rem; font-weight: bold; color: #00d4ff;">24/7</div>
+                            <p>Soporte Técnico</p>
+                        </div>
+                        <div>
+                            <div style="font-size: 2.5rem; font-weight: bold; color: #00d4ff;">150+</div>
+                            <p>Clientes Satisfechos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>¿Listo para transformar tu negocio?</h2>
+                <p>Contáctanos para una consulta gratuita y descubre cómo podemos optimizar tu infraestructura tecnológica</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-form">
+                    <h3 style="margin-bottom: 1.5rem; color: #1e293b;">Solicita tu consulta gratuita</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="nombre">Nombre completo</label>
+                            <input type="text" id="nombre" name="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="empresa">Empresa</label>
+                            <input type="text" id="empresa" name="empresa" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Correo electrónico</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input type="tel" id="telefono" name="telefono" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="mensaje">Cuéntanos sobre tu proyecto</label>
+                            <textarea id="mensaje" name="mensaje" placeholder="Describe brevemente tus necesidades tecnológicas..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary" style="width: 100%;">Enviar Consulta</button>
+                    </form>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    <div style="background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                        <h3 style="color: #1e293b; margin-bottom: 1rem;">Información de Contacto</h3>
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div>
+                                <strong>📍 Dirección:</strong><br>
+                                Zona 10, Ciudad de Guatemala<br>
+                                Guatemala, CA
+                            </div>
+                            <div>
+                                <strong>📞 Teléfono:</strong><br>
+                                +502 2234-5678
+                            </div>
+                            <div>
+                                <strong>📧 Email:</strong><br>
+                                info@Roboteko.gt
+                            </div>
+                            <div>
+                                <strong>🕒 Horarios:</strong><br>
+                                Lun - Vie: 8:00 AM - 6:00 PM<br>
+                                Sáb: 9:00 AM - 1:00 PM
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: linear-gradient(45deg, #00d4ff, #0099cc); padding: 2rem; border-radius: 20px; color: white;">
+                        <h3 style="margin-bottom: 1rem;">Consulta Gratuita</h3>
+                        <p style="margin-bottom: 1.5rem;">Agenda una videollamada de 30 minutos para evaluar tus necesidades tecnológicas sin costo.</p>
+                        <a href="#" class="btn-secondary" style="display: inline-block; border-color: white; color: white;">Agendar Llamada</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Roboteko</h3>
+                    <p>Transformamos empresas a través de la tecnología. Somos tu socio estratégico para el crecimiento digital.</p>
+                    <p><strong>Certificaciones:</strong> Microsoft Partner, AWS Certified, ISO 27001</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Servicios</h3>
+                    <ul>
+                        <li><a href="#">Infraestructura IT</a></li>
+                        <li><a href="#">Software como Servicio</a></li>
+                        <li><a href="#">Automatización</a></li>
+                        <li><a href="#">Ofimática</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Empresa</h3>
+                    <ul>
+                        <li><a href="#">Nosotros</a></li>
+                        <li><a href="#">Casos de Éxito</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Carreras</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>📍 Zona 10, Guatemala</p>
+                    <p>📞 +502 2234-5678</p>
+                    <p>📧 info@Roboteko.gt</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Roboteko. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(15, 23, 42, 0.98)';
+            } else {
+                header.style.background = 'rgba(15, 23, 42, 0.95)';
+            }
+        });
+
+        // Form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('¡Gracias por tu interés! Nos pondremos en contacto contigo pronto.');
+            this.reset();
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe service cards
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(50px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
